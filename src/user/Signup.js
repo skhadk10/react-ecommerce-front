@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../core/Layout";
-
+import { API } from "../Config";
 const Signup = () => {
   const [values, setValues] = useState({
     name: "",
@@ -10,18 +10,48 @@ const Signup = () => {
     success: false,
   });
 
-  const { name, email, password } = values;
-
-  
+  const { name, email, password, success, error } = values;
+  console.log(error, "checking error message");
   const handleChange = (name) => (e) => {
     setValues({ ...values, error: false, [name]: e.target.value });
   };
 
-  const clickSubmit = () => {};
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    signup({ name, email, password }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, success: false });
+      } else {
+        setValues({
+          ...values,
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          success: true,
+        });
+      }
+    });
+  };
+
+  const signup = (user) => {
+    return fetch(`${API}/signup`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const signUpForm = () => {
     return (
-      <form>
+      <form className="container">
         <div className="form-group">
           <label className="text-muted">name</label>
           <input
@@ -56,15 +86,36 @@ const Signup = () => {
     );
   };
 
+  const showError = () => (
+    <div className="container">
+      {error &&
+        error?.map((errorMsg, index) => (
+          <div key={index} className="alert alert-danger" role="alert">
+            {errorMsg.msg}
+          </div>
+        ))}
+    </div>
+  );
+  
+  const showSuccess = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: success ? "" : "none" }}
+    >
+      New Account is created. Please Signin
+    </div>
+  );
   return (
     <div>
-   
       <Layout
         title="Signup Page"
         description="Please Sign up here"
         className="container col-md-8 offset-md-2"
       />
+      {showSuccess()}
+      {showError()}
       {signUpForm()}
+      {JSON.stringify(values)}
     </div>
   );
 };
