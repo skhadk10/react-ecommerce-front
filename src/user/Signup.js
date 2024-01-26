@@ -1,53 +1,48 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom"
 import Layout from "../core/Layout";
-import { API } from "../Config";
+import { signup } from "../auth/index";
+
 const Signup = () => {
   const [values, setValues] = useState({
     name: "",
     email: "",
     password: "",
     error: "",
+    errorMsg:"",
     success: false,
   });
 
-  const { name, email, password, success, error } = values;
-  console.log(error, "checking error message");
+  const { name, email, password, success, error ,errorMsg} = values;
+
   const handleChange = (name) => (e) => {
-    setValues({ ...values, error: false, [name]: e.target.value });
+    setValues({ ...values, error: false,errorMsg:false, [name]: e.target.value });
   };
 
   const clickSubmit = (event) => {
     event.preventDefault();
     signup({ name, email, password }).then((data) => {
+      
       if (data.error) {
         setValues({ ...values, error: data.error, success: false });
-      } else {
+      } else if(data.errMsg) {
+        setValues({ ...values, errorMsg: data.errMsg, success: false });
+      }
+      else {
         setValues({
           ...values,
           name: "",
           email: "",
           password: "",
           error: "",
+          errorMsg:"",
           success: true,
         });
       }
     });
   };
 
-  const signup = (user) => {
-    return fetch(`${API}/signup`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((err) => console.log(err));
-  };
+  
 
   const signUpForm = () => {
     return (
@@ -89,20 +84,28 @@ const Signup = () => {
   const showError = () => (
     <div className="container">
       {error &&
-        error?.map((errorMsg, index) => (
-          <div key={index} className="alert alert-danger" role="alert">
-            {errorMsg.msg}
+        error.map((errors,i) => (
+          <div key={i} className="alert alert-danger" role="alert">
+            {errors.msg}
           </div>
         ))}
+
+        {errorMsg && (
+          <div className="alert alert-danger" role="alert">
+            {errorMsg}
+          </div>
+        )}
+    
+    
     </div>
   );
   
   const showSuccess = () => (
     <div
-      className="alert alert-info"
+      className="alert alert-info container"
       style={{ display: success ? "" : "none" }}
     >
-      New Account is created. Please Signin
+      New Account is created. Please <Link to="/signin">Signin</Link>
     </div>
   );
   return (
@@ -115,7 +118,6 @@ const Signup = () => {
       {showSuccess()}
       {showError()}
       {signUpForm()}
-      {JSON.stringify(values)}
     </div>
   );
 };
