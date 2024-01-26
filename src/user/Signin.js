@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, Redirect, useNavigate } from "react-router-dom";
 import Layout from "../core/Layout";
-import { signin } from "../auth/index";
+import { authenticate, signin } from "../auth/index";
 
 const Signin = () => {
   const navigate = useNavigate();
 
   const [values, setValues] = useState({
-    email: "",
-    password: "",
+    email: "rickeykhd@gmail.com",
+    password: "123456",
     error: "",
     errorMsg: "",
     loading: false,
@@ -30,15 +30,17 @@ const Signin = () => {
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: false, errorMsg: false, loading: true });
-    signin({ email, password }).then((data) => { 
+    signin({ email, password }).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else if (data.errorMsg) {
         setValues({ ...values, errorMsg: data.errorMsg, loading: false });
       } else {
-        setValues({
-          ...values,
-          redirectToReferer: true,
+        authenticate(data, () => {
+          setValues({
+            ...values,
+            redirectToReferer: true,
+          });
         });
       }
     });
@@ -81,11 +83,11 @@ const Signin = () => {
           </div>
         ))}
 
-      {errorMsg &&
+      {errorMsg && (
         <div className="alert alert-danger" role="alert">
           {errorMsg}
         </div>
-      }
+      )}
     </div>
   );
 
@@ -96,17 +98,17 @@ const Signin = () => {
       </div>
     );
 
-  const redirectUser= (req, res) =>{
-    if(redirectToReferer){
-      return navigate('/')
+  const redirectUser = (req, res) => {
+    if (redirectToReferer) {
+      return navigate("/");
     }
-  }
+  };
 
   return (
     <div>
       <Layout
-        title="Signup Page"
-        description="Please Sign up here"
+        title="Signin Page"
+        description="Please Sign in here"
         className="container col-md-8 offset-md-2"
       />
       {showLoading()}
