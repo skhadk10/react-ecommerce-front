@@ -12,8 +12,7 @@ const isActive = (currentPath, path) => {
 const Menu = () => {
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
-  console.log(currentPath);
-
+  const { user } = isAuthenticated();
   return (
     <div>
       <ul className="nav nav-tabs bg-primary">
@@ -59,15 +58,27 @@ const Menu = () => {
                 Signout
               </span>{" "}
             </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                style={isActive(currentPath, "/user/dashboard")}
-                to="/user/dashboard"
-              >
-                Dashboard
-              </Link>
-            </li>
+            {user && user.role === 1 ? (
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  style={isActive(currentPath, "/admin/dashboard")}
+                  to="/admin/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  style={isActive(currentPath, "/user/dashboard")}
+                  to="/user/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
           </Fragment>
         )}
       </ul>
