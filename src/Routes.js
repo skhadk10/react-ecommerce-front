@@ -10,6 +10,8 @@ import UserDashboard from "./user/UserDashboard";
 import AdminDashboard from "./user/AdminDashboard";
 import AdminRoute from "./auth/AdminRoute";
 import UserRoute from "./auth/UserRoute";
+import AddCategory from "./admin/AddCategory";
+import AddProduct from "./admin/AddProduct";
 
 const Router = () => {
   return (
@@ -36,6 +38,24 @@ const Router = () => {
           element={
             <AdminRoute>
               <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          exact
+          path="/create/category"
+          element={
+            <AdminRoute>
+              <AddCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          exact
+          path="/create/product"
+          element={
+            <AdminRoute>
+              <AddProduct />
             </AdminRoute>
           }
         />

@@ -22,7 +22,7 @@ const Menu = () => {
           </Link>
         </li>
         {!isAuthenticated() && (
-          <div>
+          <Fragment>
             <li className="nav-item">
               <Link
                 className="nav-link"
@@ -41,7 +41,7 @@ const Menu = () => {
                 Signup
               </Link>
             </li>
-          </div>
+          </Fragment>
         )}
         {isAuthenticated() && (
           <Fragment>
