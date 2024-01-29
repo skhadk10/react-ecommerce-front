@@ -21,6 +21,11 @@ const Menu = () => {
             Home
           </Link>
         </li>
+        <li className="nav-item">
+          <Link className="nav-link" style={isActive(currentPath, "/")} to="/shop">
+            Shop
+          </Link>
+        </li>
         {!isAuthenticated() && (
           <Fragment>
             <li className="nav-item">

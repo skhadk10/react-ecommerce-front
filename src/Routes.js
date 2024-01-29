@@ -12,6 +12,7 @@ import AdminRoute from "./auth/AdminRoute";
 import UserRoute from "./auth/UserRoute";
 import AddCategory from "./admin/AddCategory";
 import AddProduct from "./admin/AddProduct";
+import Shop from "./core/Shop";
 
 const Router = () => {
   return (
@@ -21,7 +22,7 @@ const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/user/dashboard" element={<UserDashboard />} /> */}
+        <Route path="/shop" element={<Shop />} />
 
         <Route
           exact
