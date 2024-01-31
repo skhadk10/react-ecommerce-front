@@ -33,9 +33,7 @@ const Search = () => {
             <select className="btn mr-2" onChange={handleChange("category")}>
               <option value="All">All</option>
               {categories.map((c, i) => (
-                <option key={i} value={c._id}>
-                  {c.name}
-                </option>
+                <option key={i} value={c._id}>{c.name}</option>
               ))}
             </select>
           </div>
@@ -60,7 +58,7 @@ const Search = () => {
       list({ search: search || undefined, category: category }).then(
         (response) => {
           if (response.error) {
-            console.log(response.error);
+            console.log(response.error,"checking error");
           } else {
             setData({ ...data, results: response, searched: true });
           }
@@ -69,15 +67,12 @@ const Search = () => {
     }
   };
 
-
   const searchedProducts = (results = []) => {
-    
     return (
       <div>
         <h2 className="mt-4 mb-4">{searchMessage(searched, results)}</h2>
-
         <div className="row">
-          {JSON.stringify(results)}
+          {console.log(results,"checking final results...")}
           {results.map((product, i) => (
             <Card key={i} product={product} />
           ))}
@@ -97,11 +92,12 @@ const Search = () => {
   };
 
   const searchSubmit = (event) => {
+   
     event.preventDefault();
     searchData();
   };
   const handleChange = (name) => (event) => {
-    console.log(name);
+    console.log(name)
     setData({ ...data, [name]: event.target.value, searched: false });
   };
   return (

@@ -35,29 +35,33 @@ const Shop = () => {
         console.log(data, "check");
         setFilteredResults(data.data);
         setSize(data.size);
-        setSkip(0)
+        setSkip(0);
       }
     });
   };
   const loadMore = () => {
-    let toSkip=skip+limit
+    let toSkip = skip + limit;
     getFilteredProduct(skip, limit, myFilters.filters).then((data) => {
       if (data.error) {
         setError(data.error);
       } else {
         console.log(data, "check");
-        setFilteredResults([...filteredResults,...data.data]);
+        setFilteredResults([...filteredResults, ...data.data]);
         setSize(data.size);
-        setSkip(toSkip)
+        setSkip(toSkip);
       }
     });
   };
-  const loadMoreButton=()=>{
-    
+  const loadMoreButton = () => {
     return (
-      size>0 && size>=limit && (<button onClick={loadMore}className="btn btn-warning mb-5">load more</button>)
-    )
-  }
+      size > 0 &&
+      size >= limit && (
+        <button onClick={loadMore} className="btn btn-warning mb-5">
+          load more
+        </button>
+      )
+    );
+  };
 
   const handleFilters = (filters, filterBy) => {
     console.log(filters, "category");
@@ -70,7 +74,7 @@ const Shop = () => {
     loadFilteredResults(myFilters.filters);
     setMyFilters(newFilters);
   };
-//  to grav the array number inside of price[0,9], [10,19] like this
+  //  to grav the array number inside of price[0,9], [10,19] like this
   const handlePrice = (value) => {
     const data = prices;
     let array = [];
@@ -115,7 +119,9 @@ const Shop = () => {
           <h2 className="mb-4">Products</h2>
           <div className="row">
             {filteredResults.map((product, i) => (
-              <Card key={i} product={product} />
+              <div key={i} className="col-4 mb-3">
+                <Card product={product} />
+              </div>
             ))}
             {loadMoreButton()}
           </div>

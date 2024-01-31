@@ -43,3 +43,18 @@ export const list = (params) => {
     .then((response) => response.json())
     .catch((err) => console.log(err));
 };
+export const read = (productId) => {
+  return fetch(`${API}/product/read/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+};
+export const listRelated = (productId) => {
+  return fetch(`${API}/products/related/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+};
+
